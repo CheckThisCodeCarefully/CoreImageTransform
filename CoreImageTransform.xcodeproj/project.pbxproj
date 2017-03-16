@@ -12,6 +12,9 @@
 		6409610D1E75881100EEA1CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6409610B1E75881100EEA1CC /* Main.storyboard */; };
 		6409610F1E75881100EEA1CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6409610E1E75881100EEA1CC /* Assets.xcassets */; };
 		640961121E75881100EEA1CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 640961101E75881100EEA1CC /* LaunchScreen.storyboard */; };
+		6409611B1E758A2A00EEA1CC /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6409611A1E758A2A00EEA1CC /* GLKit.framework */; };
+		C9F6F56D5FB8BA9EBD5D8D0C /* CIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F6D81B2C28D76E6F7DB985 /* CIImageView.swift */; };
+		C9FBE6CD36CCE10B4012415D /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FECB005244784C687FF38A /* image.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		6409610E1E75881100EEA1CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		640961111E75881100EEA1CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		640961131E75881100EEA1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6409611A1E758A2A00EEA1CC /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		C9F6D81B2C28D76E6F7DB985 /* CIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIImageView.swift; sourceTree = "<group>"; };
+		C9FECB005244784C687FF38A /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6409611B1E758A2A00EEA1CC /* GLKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +47,7 @@
 			children = (
 				640961061E75881000EEA1CC /* CoreImageTransform */,
 				640961051E75881000EEA1CC /* Products */,
+				640961191E758A2A00EEA1CC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,8 +68,18 @@
 				6409610E1E75881100EEA1CC /* Assets.xcassets */,
 				640961101E75881100EEA1CC /* LaunchScreen.storyboard */,
 				640961131E75881100EEA1CC /* Info.plist */,
+				C9F6D81B2C28D76E6F7DB985 /* CIImageView.swift */,
+				C9FECB005244784C687FF38A /* image.png */,
 			);
 			path = CoreImageTransform;
+			sourceTree = "<group>";
+		};
+		640961191E758A2A00EEA1CC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6409611A1E758A2A00EEA1CC /* GLKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +145,7 @@
 				640961121E75881100EEA1CC /* LaunchScreen.storyboard in Resources */,
 				6409610F1E75881100EEA1CC /* Assets.xcassets in Resources */,
 				6409610D1E75881100EEA1CC /* Main.storyboard in Resources */,
+				C9FBE6CD36CCE10B4012415D /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +158,7 @@
 			files = (
 				6409610A1E75881100EEA1CC /* ViewController.swift in Sources */,
 				640961081E75881100EEA1CC /* AppDelegate.swift in Sources */,
+				C9F6F56D5FB8BA9EBD5D8D0C /* CIImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +322,7 @@
 				640961181E75881100EEA1CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
