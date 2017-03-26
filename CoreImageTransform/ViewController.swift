@@ -11,6 +11,9 @@ import CoreGraphics
 
 class ViewController: UIViewController {
 
+    private let calculationLayer = CALayer()
+    private let calculationSubLayer = CALayer()
+    
     private let kPerspectiveM34:CGFloat = 1 / -2500;
 
     private var image:CIImage!
@@ -45,6 +48,8 @@ class ViewController: UIViewController {
         timer.add(to: RunLoop.main, forMode: .defaultRunLoopMode)
         imageSize = CGSize(width: resource.width, height: resource.height)
         updateSliderLabel()
+        
+        calculationLayer.addSublayer(calculationSubLayer)
     }
 
     //MARK: private
@@ -63,15 +68,14 @@ class ViewController: UIViewController {
                 return
             }
             
-            let transform = s.transfotm(oyAngle: degree)
-            var points = s.makeTransformedImagePoints(transform: transform)
-            
-            if(degree > 0){
-                points[0].x = s.imageSize.width - points[1].x
-                points[1].x = s.imageSize.width
-                points[3].x = s.imageSize.width - points[2].x
-                points[2].x = s.imageSize.width
+            var transform = s.transfotm(oyAngle: degree)
+            var anchorPoint = degree >= 0 ? CGPoint(x:0, y:0.5) : CGPoint(x:1, y:0.5)
+            if(degree == 0){
+                anchorPoint = CGPoint(x: 0.5, y: 0.5)
+                transform = CATransform3DIdentity
             }
+            var points = s.maketransformPoints(transform: transform, anchorPoint: anchorPoint)
+            
             
             let perspectiveTransform = CIFilter(name: "CIPerspectiveTransform")!
             
@@ -91,13 +95,13 @@ class ViewController: UIViewController {
     }
 
     private func degreeToRadian(degree: CGFloat) -> CGFloat {
-        let result = degree * CGFloat(M_PI) / 180
+        let result = degree * .pi / 180
         return result
     }
 
     private func transfotm(oyAngle:CGFloat) -> CATransform3D {
         let radian = degreeToRadian(degree: oyAngle)
-            var transform = CATransform3DIdentity;
+        var transform = CATransform3DIdentity
         transform.m34 = kPerspectiveM34;
         return CATransform3DRotate(transform, radian, 0, 1, 0)
     }
@@ -106,33 +110,32 @@ class ViewController: UIViewController {
         renderView.setRenderImage(image: processedImage)
     }
     
-    private func convertPoint(p:CGPoint, transform:CATransform3D) -> CGPoint {
-        let m1:[CGFloat] = [p.x, p.y, 0, 1]
-        var m2:[[CGFloat]]  = Array();
-        m2.append([transform.m11, transform.m12, transform.m13, transform.m14])
-        m2.append([transform.m21, transform.m22, transform.m23, transform.m24])
-        m2.append([transform.m31, transform.m32, transform.m33, transform.m34])
-        m2.append([transform.m41, transform.m42, transform.m43, transform.m44])
-        
-        var result:[CGFloat] = Array()
-        for i in 0...2 {
-            var k:CGFloat = 0
-            for j in 0...3 {
-                k = k + m1[j] * (m2[j])[i]
-            }
-            result.append(k)
+    private func aplyAnchorPoint(_ point:CGPoint) {
+        if(__CGPointEqualToPoint(self.calculationSubLayer.anchorPoint, point)){
+            return
         }
         
-        return CGPoint(x: result[0], y: result[1])
+        calculationSubLayer.anchorPoint = point
     }
     
-    private func makeTransformedImagePoints(transform:CATransform3D) -> [CGPoint] {
-        return [
-            convertPoint(p: CGPoint(x:CGFloat(FLT_EPSILON), y:CGFloat(FLT_EPSILON)), transform: transform),
-            convertPoint(p: CGPoint(x:imageSize.width, y:CGFloat(FLT_EPSILON)), transform: transform),
-            convertPoint(p: CGPoint(x:imageSize.width, y:imageSize.height), transform: transform),
-            convertPoint(p: CGPoint(x:CGFloat(FLT_EPSILON), y:imageSize.height), transform: transform),
+    //dirty solution with CALayer
+    private func maketransformPoints(transform:CATransform3D, anchorPoint:CGPoint) -> [CGPoint] {
+        var points:[CGPoint] = []
+        
+        calculationLayer.transform = CATransform3DIdentity
+        calculationLayer.frame = CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height)
+        calculationSubLayer.transform = CATransform3DIdentity
+        calculationSubLayer.frame = calculationLayer.bounds
+        aplyAnchorPoint(anchorPoint)
+        calculationSubLayer.transform = transform
+        points = [
+            calculationSubLayer.convert(CGPoint(x:0, y:0), to: calculationLayer),
+            calculationSubLayer.convert(CGPoint(x:imageSize.width, y:0), to: calculationLayer),
+            calculationSubLayer.convert(CGPoint(x:imageSize.width, y:imageSize.height), to: calculationLayer),
+            calculationSubLayer.convert(CGPoint(x:0, y:imageSize.height), to: calculationLayer),
         ]
+        
+        return points
     }
     
 }
